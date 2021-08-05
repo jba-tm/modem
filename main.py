@@ -126,6 +126,8 @@ if __name__ == '__main__':
         "enabled": 1
     }
 
+    PORT = '/dev/ttyUSB2'
+
     # send_sms_at(data,action_config=config)
 
     # incoming_call(config)
@@ -138,7 +140,7 @@ if __name__ == '__main__':
     for i in result:
         pprint(i.__dict__)
 
-    modem = Modem(device='COM11', rate=9600)
+    modem = Modem(device=PORT, rate=9600)
     result = modem.send_sms_at(message="Yalnysh ugratdym", recipient=[
         "99363489374",  # Modem
         # '99364046654',  # Nazar
