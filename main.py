@@ -147,7 +147,7 @@ class Modem:
         modem = None
 
         for port in ports:
-
+            print(port.__dict__)
             modem = GsmModem(port.device, **modem_options)
             try:
                 log.debug('Attempting to connect to modem at %s' % port)
@@ -197,9 +197,9 @@ if __name__ == '__main__':
     print(modem.baudrate)
     # result = modem.send_sms_at(message="Yalnysh ugratdym", recipient=[
     #     '99362111002',
-        # "99363489374",  # Modem
-        # '99364046654',  # Nazar
-        # '99362693277'
+    #     "99363489374",  # Modem
+    #     '99364046654',  # Nazar
+    #     '99362693277'
     # ])
     # modem.call_to('99362111002')
     # result = modem.own_number()
