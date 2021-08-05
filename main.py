@@ -147,7 +147,7 @@ class Modem:
         modem = None
 
         for port in ports:
-            pprint(type(port))
+            pprint(port.device)
 
             # print(type(port['device']))
             # modem = GsmModem(port['device'], **modem_options)
