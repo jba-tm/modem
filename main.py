@@ -192,7 +192,7 @@ if __name__ == '__main__':
 
     # modem = Modem(device=PORT, rate=9600)
     modem = Modem.autodetect_modem()
-    print(modem.port)
+    print(modem)
     # result = modem.send_sms_at(message="Yalnysh ugratdym", recipient=[
     #     '99362111002',
         # "99363489374",  # Modem
