@@ -147,8 +147,13 @@ class Modem:
         modem = None
 
         for port in ports:
-            print(port['device'])
-            print(type(port['device']))
+            pprint(ports.__dict__)
+
+
+            print('\n\nPort 1111111111111111')
+            pprint(port.__dict__)
+
+            # print(type(port['device']))
             # modem = GsmModem(port['device'], **modem_options)
             # try:
             #     log.debug('Attempting to connect to modem at %s' % port)
