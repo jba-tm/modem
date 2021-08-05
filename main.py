@@ -147,11 +147,7 @@ class Modem:
         modem = None
 
         for port in ports:
-            pprint(ports)
-
-
-            print('\n\nPort 1111111111111111')
-            pprint(port.__dict__)
+            pprint(type(port))
 
             # print(type(port['device']))
             # modem = GsmModem(port['device'], **modem_options)
