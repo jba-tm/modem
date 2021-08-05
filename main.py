@@ -147,6 +147,7 @@ class Modem:
         modem = None
 
         for port in ports:
+
             modem = GsmModem(port.device, **modem_options)
             try:
                 log.debug('Attempting to connect to modem at %s' % port)
@@ -192,7 +193,8 @@ if __name__ == '__main__':
 
     # modem = Modem(device=PORT, rate=9600)
     modem = Modem.autodetect_modem()
-    print(modem)
+    print(modem.port)
+    print(modem.baudrate)
     # result = modem.send_sms_at(message="Yalnysh ugratdym", recipient=[
     #     '99362111002',
         # "99363489374",  # Modem
