@@ -192,15 +192,16 @@ if __name__ == '__main__':
         pprint(i.__dict__)
 
     # modem = Modem(device=PORT, rate=9600)
-    modem = Modem.autodetect_modem()
-    print(modem.port)
-    print(modem.baudrate)
-    # result = modem.send_sms_at(message="Yalnysh ugratdym", recipient=[
-    #     '99362111002',
-    #     "99363489374",  # Modem
-    #     '99364046654',  # Nazar
-    #     '99362693277'
-    # ])
+    detect_modem = Modem.autodetect_modem()
+
+    modem = Modem(device=detect_modem.device, rate=detect_modem.baudrate)
+
+    result = modem.send_sms_at(message="Yalnysh ugratdym", recipient=[
+        '99362111002',
+        # "99363489374",  # Modem
+        # '99364046654',  # Nazar
+        # '99362693277'
+    ])
     # modem.call_to('99362111002')
     # result = modem.own_number()
     # print(result)
