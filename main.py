@@ -147,20 +147,21 @@ class Modem:
         modem = None
 
         for port in ports:
-            modem = GsmModem(port['device'], **modem_options)
-            try:
-                log.debug('Attempting to connect to modem at %s' % port)
-                modem.connect(pin=pin)
-                if not check_fn or check_fn and check_fn(modem):
-                    log.debug('Successfully detected modem at %s' % port)
-                    return modem
-            except SerialException:
-                log.warning('Serial communication problem for port %s' % port)
-            except TimeoutException:
-                log.warning('Timeout detected on port %s' % port)
-
-            log.debug('Closing modem at %s' % port)
-            modem.close()
+            print(port.__dict__)
+            # modem = GsmModem(port['device'], **modem_options)
+            # try:
+            #     log.debug('Attempting to connect to modem at %s' % port)
+            #     modem.connect(pin=pin)
+            #     if not check_fn or check_fn and check_fn(modem):
+            #         log.debug('Successfully detected modem at %s' % port)
+            #         return modem
+            # except SerialException:
+            #     log.warning('Serial communication problem for port %s' % port)
+            # except TimeoutException:
+            #     log.warning('Timeout detected on port %s' % port)
+            #
+            # log.debug('Closing modem at %s' % port)
+            # modem.close()
 
 
 if __name__ == '__main__':
