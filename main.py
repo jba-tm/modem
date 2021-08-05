@@ -147,7 +147,7 @@ class Modem:
         modem = None
 
         for port in ports:
-            pprint(ports.__dict__)
+            pprint(ports)
 
 
             print('\n\nPort 1111111111111111')
