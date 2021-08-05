@@ -6,6 +6,8 @@ from pprint import pprint
 from gsmmodem import GsmModem
 import sys
 
+from serial import SerialException
+
 from gsmmodem.exceptions import TimeoutException, CommandError, InterruptedException
 
 log = logging.getLogger(__name__)
@@ -112,6 +114,54 @@ class Modem:
         print('Done.')
         modem.close()
 
+    @staticmethod
+    def autodetect_modem(pin=None, check_fn=None, modem_options=None):
+        """ Autodetect a suitable cellular modem connected to the system.
+
+        :param pin: Security PIN to unlock the SIM.
+        :param check_fn: Callable that should take a single ``modem`` argument
+            and return True if the modem instance is suitable.
+        :param modem_options: Structure to pass as keyword arguments to
+            ``GsmModem`` initialisation.
+        :type modem_options: dict-like
+        :returns: Connected modem instance
+        :rtype: :class:`gsmmodem.modem.GsmModem`
+
+        This method will iterate through all potential serial ports on the system
+        and attempt to ``connect()`` to each of them in turn.  The first serial
+        port that connects successfully, and passes the ``check_fn(modem)`` call
+        (if ``check_fn`` is specified), will be returned.
+
+        All other unsuccessful connections will be closed during the process.
+
+        This method will return ``None`` if no modems could be detected.
+        """
+        ports = list_ports.comports()
+        if not ports:
+            log.error('No modem ports detected on system.')
+            return
+
+        if modem_options is None:
+            modem_options = {'baudrate': 9600}
+
+        modem = None
+
+        for port in ports:
+            modem = GsmModem(port['device'], **modem_options)
+            try:
+                log.debug('Attempting to connect to modem at %s' % port)
+                modem.connect(pin=pin)
+                if not check_fn or check_fn and check_fn(modem):
+                    log.debug('Successfully detected modem at %s' % port)
+                    return modem
+            except SerialException:
+                log.warning('Serial communication problem for port %s' % port)
+            except TimeoutException:
+                log.warning('Timeout detected on port %s' % port)
+
+            log.debug('Closing modem at %s' % port)
+            modem.close()
+
 
 if __name__ == '__main__':
     data = {'message': "Look at me I will show you a magic"}
@@ -140,13 +190,15 @@ if __name__ == '__main__':
     for i in result:
         pprint(i.__dict__)
 
-    modem = Modem(device=PORT, rate=9600)
-    result = modem.send_sms_at(message="Yalnysh ugratdym", recipient=[
-        '99362111002',
+    # modem = Modem(device=PORT, rate=9600)
+    modem = Modem.autodetect_modem()
+    print(modem.port)
+    # result = modem.send_sms_at(message="Yalnysh ugratdym", recipient=[
+    #     '99362111002',
         # "99363489374",  # Modem
         # '99364046654',  # Nazar
         # '99362693277'
-    ])
+    # ])
     # modem.call_to('99362111002')
     # result = modem.own_number()
     # print(result)
