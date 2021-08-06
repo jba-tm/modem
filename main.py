@@ -163,13 +163,81 @@ class Modem:
             log.debug('Closing modem at %s' % port)
             modem.close()
 
+    def send_ussd_at(self, ussd_string):
+        print('Initializing modem...')
+        # logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.DEBUG)
+        modem = self.modem
+        modem.connect()
+        modem.waitForNetworkCoverage(10)
+        print('Sending USSD string: {0}'.format(ussd_string))
+        response = modem.sendUssd(ussd_string)  # response type: gsmmodem.modem.Ussd
+        message = response.message
+        print('USSD reply received: {0}'.format(message))
+        if response.sessionActive:
+            print('Closing USSD session.')
+            # At this point, you could also reply to the USSD message by using response.reply()
+            response.cancel()
+        else:
+            print('USSD session was ended by network.')
+        modem.close()
+        return message
+
+    def getUnreadText(self, key: str = '9703BB8D5A'):
+        if key.strip() == '9703BB8D5A':
+            modem = self.modem
+
+            try:
+                print("Connecting mode")
+                modem.connect()
+            except:
+                return "Error connecting"
+            try:
+                messages = modem.listStoredSms(status=Sms.STATUS_RECEIVED_UNREAD)
+            except Exception as e:
+                return str(e)
+
+            modem.close()
+
+            ret_string = ""
+            print("Got %d messages" % len(messages))
+            for message in messages:
+                ret_string = ret_string + "%s : %s" % (message.number, message.text)
+
+            return ret_string
+        else:
+            return "Incorrect key"
+
+    def getAllText(self, key: str = '9703BB8D5A'):
+        if key.strip() == '9703BB8D5A':
+            modem = self.modem
+
+            try:
+                print("Connecting modem")
+                modem.connect()
+            except Exception as e:
+                return str(e)
+
+            try:
+                messages = modem.listStoredSms()
+            except Exception as e:
+                return str(e)
+
+            modem.close()
+            ret_string = ""
+            print("Got %d messages" % len(messages))
+            for message in messages:
+                ret_string = ret_string + "%s : %s" % (message.number, message.text) + "\n"
+
+            return ret_string
+        else:
+            return "Incorrect key"
+
 
 if __name__ == '__main__':
     data = {'message': "Look at me I will show you a magic"}
-    PORT = '/dev/ttyUSB0'
+    PORT = 'COM8'
 
     modem = Modem(device=PORT, rate=9600)
 
-    result = modem.send_sms_at(message=data['message'], recipient=[
-        '99362111002',
-    ])
+    result = modem.send_ussd_at('*0800#')
+    print(result)
