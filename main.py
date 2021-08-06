@@ -166,42 +166,10 @@ class Modem:
 
 if __name__ == '__main__':
     data = {'message': "Look at me I will show you a magic"}
-    config = {
-        "recipient": [
-            "99363489374",  # Modem
-            # '99364046654',  # Nazar
-
-        ],
-        "port": "COM9",
-        "speed": 9600,
-        "enabled": 1
-    }
-
     PORT = '/dev/ttyUSB0'
 
-    # send_sms_at(data,action_config=config)
-
-    # incoming_call(config)
-
-    # own_number(config)
-
-    # getUnreadText('9703BB8D5A')
-
-    result = list_ports.comports()
-    for i in result:
-        pprint(i.__dict__)
-
     modem = Modem(device=PORT, rate=9600)
-    # detect_modem = Modem.autodetect_modem()
 
-    # modem = Modem(device=detect_modem.port, rate=detect_modem.baudrate)
-
-    result = modem.send_sms_at(message="Yalnysh ugratdym", recipient=[
+    result = modem.send_sms_at(message=data['message'], recipient=[
         '99362111002',
-        # "99363489374",  # Modem
-        # '99364046654',  # Nazar
-        # '99362693277'
     ])
-    # modem.call_to('99362111002')
-    # result = modem.own_number()
-    # print(result)
