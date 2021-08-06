@@ -166,7 +166,7 @@ class Modem:
 
 if __name__ == '__main__':
     data = {'message': "Look at me I will show you a magic"}
-    PORT = '/dev/ttyUSB1'
+    PORT = '/dev/ttyUSB2'
 
     modem = Modem(device=PORT, rate=9600)
 
