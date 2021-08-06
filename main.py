@@ -247,12 +247,13 @@ class Modem:
 if __name__ == '__main__':
     data = {'message': "All sms"}
 
-    # detect_modem = Modem.autodetect_modem()
+    detect_modem = Modem.autodetect_modem()
 
-    # print(f"Modem port: {detect_modem.port}")
-    # print(f"Modem baudrate: {detect_modem.baudrate}")
+    print(f"Modem port: {detect_modem.port}")
+    print(f"Modem baudrate: {detect_modem.baudrate}")
 
-    modem = Modem(device='COM8', rate=9600)
+    modem = Modem(device=detect_modem.port, rate=detect_modem.baudrate)
 
     result = modem.get_all_text()
     pprint(result)
+g
