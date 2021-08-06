@@ -200,9 +200,16 @@ class Modem:
 
             modem.close()
             print("Got %d messages" % len(messages))
+            message_data = []
             for message in messages:
-                print(message.__dict__)
-            return messages
+                message_data.append({
+                    'number': message.number,
+                    'text': message.text,
+                    'time': message.time.strftime("%Y-%m-%d %H:%M:%S"),
+                    'smsc': message.smsc,
+
+                })
+            return message_data
         else:
             return "Incorrect key"
 
