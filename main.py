@@ -172,9 +172,8 @@ if __name__ == '__main__':
     print(f"Modem port: {detect_modem.port}")
     print(f"Modem baudrate: {detect_modem.baudrate}")
 
-    # modem = Modem(device=detect_modem.port, rate=detect_modem.baudrate)
+    modem = Modem(device=detect_modem.port, rate=detect_modem.baudrate)
 
-
-    # result = modem.send_sms_at(message=data['message'], recipient=[
-    #     '99362111002',
-    # ])
+    result = modem.send_sms_at(message=data['message'], recipient=[
+        '99362111002',
+    ])
