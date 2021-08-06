@@ -171,10 +171,11 @@ class Modem:
         modem = self.modem
         modem.connect()
         modem.waitForNetworkCoverage(10)
-        print('Sending USSD string: {0}'.format(ussd_string))
+        print(f'Sending USSD string: {ussd_string}')
         response = modem.sendUssd(ussd_string)  # response type: gsmmodem.modem.Ussd
         message = response.message
-        print('USSD reply received: {0}'.format(message))
+        print(f'USSD reply received:')
+        print(message)
         if response.sessionActive:
             print('Closing USSD session.')
             # At this point, you could also reply to the USSD message by using response.reply()
@@ -251,9 +252,9 @@ if __name__ == '__main__':
 
     print(f"Modem port: {detect_modem.port}")
     print(f"Modem baudrate: {detect_modem.baudrate}")
+    detect_modem.close()
 
-    modem = Modem(device=detect_modem.port, rate=detect_modem.baudrate)
+    modem = Modem(device=detect_modem.port, rate=detect_modem.baudrate, )
 
-    result = modem.get_all_text()
+    result = modem.send_ussd_at('*222#')
     pprint(result)
-g
