@@ -1,6 +1,8 @@
+import datetime
 import logging
 import time
 
+from gsmmodem.modem import Sms
 from serial.tools import list_ports
 from pprint import pprint
 from gsmmodem import GsmModem
@@ -182,7 +184,7 @@ class Modem:
         modem.close()
         return message
 
-    def getUnreadText(self, key: str = '9703BB8D5A'):
+    def get_unread_text(self, key: str = '9703BB8D5A'):
         if key.strip() == '9703BB8D5A':
             modem = self.modem
 
@@ -197,17 +199,14 @@ class Modem:
                 return str(e)
 
             modem.close()
-
-            ret_string = ""
             print("Got %d messages" % len(messages))
             for message in messages:
-                ret_string = ret_string + "%s : %s" % (message.number, message.text)
-
-            return ret_string
+                print(message.__dict__)
+            return messages
         else:
             return "Incorrect key"
 
-    def getAllText(self, key: str = '9703BB8D5A'):
+    def get_all_text(self, key: str = '9703BB8D5A'):
         if key.strip() == '9703BB8D5A':
             modem = self.modem
 
@@ -223,21 +222,30 @@ class Modem:
                 return str(e)
 
             modem.close()
-            ret_string = ""
             print("Got %d messages" % len(messages))
+            message_data = []
             for message in messages:
-                ret_string = ret_string + "%s : %s" % (message.number, message.text) + "\n"
+                message_data.append({
+                    'number': message.number,
+                    'text': message.text,
+                    'time': message.time.strftime("%Y-%m-%d %H:%M:%S"),
+                    'smsc': message.smsc,
 
-            return ret_string
+                })
+            return message_data
         else:
             return "Incorrect key"
 
 
 if __name__ == '__main__':
-    data = {'message': "Look at me I will show you a magic"}
-    PORT = 'COM8'
+    data = {'message': "All sms"}
 
-    modem = Modem(device=PORT, rate=9600)
+    # detect_modem = Modem.autodetect_modem()
 
-    result = modem.send_ussd_at('*0800#')
-    print(result)
+    # print(f"Modem port: {detect_modem.port}")
+    # print(f"Modem baudrate: {detect_modem.baudrate}")
+
+    modem = Modem(device='COM8', rate=9600)
+
+    result = modem.get_all_text()
+    pprint(result)
